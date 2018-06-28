@@ -23,8 +23,8 @@ public class HoneywellMain {
 
         long startTime = System.currentTimeMillis();
 
-        HoneywellParam honeywellParam = new HoneywellParam("112.30.34.96", 8091, "admin", "q123456", 554);
-        CaptureParam snapParam = new CaptureParam(1, "f:\\snap\\" + UUIDUtil.getUUID() + ".jpg");
+        HoneywellParam honeywellParam = new HoneywellParam("192.168.1.123", 8091, "admin", "q123456", 554);
+        CaptureParam snapParam = new CaptureParam(1, "c:\\snap\\" + UUIDUtil.getUUID() + ".jpg");
         HoneywellSDK sdk = new HoneywellSDK(honeywellParam, snapParam);
 
         HoneywellMain honeywellMain = new HoneywellMain(sdk);
