@@ -26,33 +26,69 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Slf4j
 public class HoneywellSDK {
 
-    private HoneywellParam honeywellParam;      // 登录参数
-    private CaptureParam captureParam;          // 抓图参数
-    /**
-     * 解码次数
-     */
-    private int decodeTimes = 0;
-
-    private static final int VIDEO_PARAM_SIZE = 536;       // 视频参数大小
-    private static final int VIDEO_PARAM_START_INDEX = 36;  // 视频参数开始下标
+    // 视频参数大小
+    private static final int VIDEO_PARAM_SIZE = 536;
+    // 视频参数开始下标
+    private static final int VIDEO_PARAM_START_INDEX = 36;
 
     private static IPNet264SDK ipNet264SDK = IPNet264SDK.INSTANCE;
     private static PlayerSDK playerSDK = PlayerSDK.INSTANCE;
 
-    private NativeLong userID;                               // 设备句柄
-    private NativeLong nPort;                                // 通道号
-    private NativeLong lRealHandle;                         // 播放句柄
+    /**
+     * 登录参数
+     */
+    private HoneywellParam honeywellParam;
+    /**
+     * 抓图参数
+     */
+    private CaptureParam captureParam;
+    /**
+     * 解码次数
+     */
+    private int decodeTimes = 0;
+    /**
+     * 设备句柄
+     */
+    private NativeLong userID;
+    /**
+     * 通道号
+     */
+    private NativeLong nPort;
+    /**
+     * 播放句柄
+     */
+    private NativeLong lRealHandle;
 
-    private int loginStatus = 0;                            // 登录状态
+    /**
+     * 登录状态
+     */
+    private int loginStatus = 0;
 
-    private StatusEventCallBack statusEventCallBack = new StatusEventCallBack();                // 状态告警事件回调函数
-    private AUXResponseCallBack auxResponseCallBack = new AUXResponseCallBack();                // 辅助通道消息回调函数
-    private RealDataCallBack realDataCallBack = new RealDataCallBack();                         // 实时播放回调
+    /**
+     * 状态告警事件回调函数
+     */
+    private StatusEventCallBack statusEventCallBack = new StatusEventCallBack();
+    /**
+     * 辅助通道消息回调函数
+     */
+    private AUXResponseCallBack auxResponseCallBack = new AUXResponseCallBack();
+    /**
+     * 实时播放回调
+     */
+    private RealDataCallBack realDataCallBack = new RealDataCallBack();
 
-    private IPNet264SDK.LPUSRE_VIDEOINFO lpusreVideoinfo = new IPNet264SDK.LPUSRE_VIDEOINFO();  // 连接视频流相关参数
-    private OnMediaDataRecvCallback onMediaDataRecvCallback = new OnMediaDataRecvCallback();   // 解码回调
+    /**
+     * 连接视频流相关参数
+     */
+    private IPNet264SDK.LPUSRE_VIDEOINFO lpusreVideoinfo = new IPNet264SDK.LPUSRE_VIDEOINFO();
+    /**
+     * 解码回调
+     */
+    private OnMediaDataRecvCallback onMediaDataRecvCallback = new OnMediaDataRecvCallback();
 
-    // 视频图片队列
+    /**
+     * 视频图片队列
+     */
     private Queue<ImageFrame> imageQueue = new ConcurrentLinkedQueue<>();
 
     /**
@@ -136,7 +172,8 @@ public class HoneywellSDK {
             log.error("回到预置点失败，预置点编号：" + captureParam.getPresetIndex());
             return false;
         }
-        sleep(3000L); //等待球机转回预置点
+        // 等待球机转回预置点
+        sleep(3000L);
         log.info("回到预置点成功");
         return true;
     }
@@ -187,11 +224,14 @@ public class HoneywellSDK {
             log.error("---登录失败---");
             return false;
         }
-        sleep(800L);// 等待登录完成
+        // 等待登录完成
+        sleep(800L);
         if (loginStatus != IPNet264SDK.EVENT_LOGINOK) {
-            sleep(1000L);// 等待登录完成
+            // 等待登录完成
+            sleep(1000L);
             if (loginStatus != IPNet264SDK.EVENT_LOGINOK) {
-                sleep(2200L);// 等待登录完成
+                // 等待登录完成
+                sleep(2200L);
                 if (loginStatus != IPNet264SDK.EVENT_LOGINOK) {
                     log.error("---登录失败---");
                     return false;
