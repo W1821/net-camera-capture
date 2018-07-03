@@ -6,6 +6,7 @@ import com.psj.capture.util.ImageUtil;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.ByteByReference;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -352,29 +353,20 @@ public class HoneywellSDK {
 
         // 图片格式转换YUV转RGB
         byte[] rgb24 = ImageUtil.swapYV12ToRGB24(yb12, frame.getWidth(), frame.getHeight());
+//        BMPUtil.saveBmp("c:\\snap\\" + 1 + ".jpg", rgb24, frame.getWidth(), frame.getHeight());
 
-        InputStream imageInputStream = null;
-        FileOutputStream fos = null;
         try {
-            imageInputStream = BMPUtil.getRgb24BmpInputStream(rgb24, frame.getWidth(), frame.getHeight());
+
+            @Cleanup InputStream imageInputStream = BMPUtil.getRgb24BmpInputStream(rgb24, frame.getWidth(), frame.getHeight());
             BufferedImage bufferedImage = ImageIO.read(imageInputStream);
             File file = new File(captureParam.getFilePath());
-            fos = new FileOutputStream(file);
+
+            @Cleanup FileOutputStream fos = new FileOutputStream(file);
             ImageIO.write(bufferedImage, "jpg", fos);
+
         } catch (Exception e) {
             success = false;
             log.error("抓图失败", e);
-        } finally {
-            try {
-                if (imageInputStream != null) {
-                    imageInputStream.close();
-                }
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return success;
     }
